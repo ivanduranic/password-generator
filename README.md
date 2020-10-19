@@ -9,7 +9,7 @@ This Password Generator application was created using JavaScript programming lan
 ## Usage
 
 User will notice following files inside 'Develop' folder: 'index.html','style.css' and script.js. Inside the 'Assets' folder there's a png file that shows the desired look of a webpage. Finally, there's a README file.
-Link to a deployed application you can find here: https://ivanduranic.github.io/password-generator/.
+Link to a deployed application you can find here: 
 
 ## Support
 
