@@ -4,7 +4,7 @@ This Password Generator application was created using JavaScript programming lan
 
 ## Visuals
 
-![pswgen](https://user-images.githubusercontent.com/61889668/96400637-4466eb80-119f-11eb-966d-4a890bb6deef.jpg)
+![generator](https://user-images.githubusercontent.com/61889668/96577037-0a7e0e00-12a1-11eb-8c52-ac8cbe7d0174.jpg)
 
 ## Usage
 
