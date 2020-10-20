@@ -30,8 +30,6 @@
       // MAIN PROCESS
       // ==============================================================================
 
-      // A while loop makes more sense here than a for loop, because we don't know how long the user will want to play the game
-      // This loop will end when the user presses Cancel, thus setting the letter variable to "null"
       while (letter !== null) {
         // Prompt user to input a letter
         letter = prompt("Type 'c' to see how many characters the password should have, 't' to see which character types the password should have.");
@@ -54,6 +52,13 @@ var letter = document.getElementById("letter");
 var capital = document.getElementById("capital");
 var number = document.getElementById("number");
 var length = document.getElementById("length");
+var myForm = document.getElementById("psw-form");
+
+// When the user submits his password, the alert pops out that shows his password
+myForm.onsubmit = function (event) {  
+  event.preventDefault();
+  alert("Your password is: " + myInput.value);
+};
 
 // When the user clicks on the password field, show the message box
 myInput.onfocus = function() {
