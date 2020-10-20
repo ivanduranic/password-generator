@@ -1,113 +1,151 @@
-    var letter;
+// Assignment Code
+var generateBtn = document.querySelector("#generate");
 
-      var password = {
-        length: [8 - 128],
-        uppercase: true,
-        lowercase: true,
-        number: true,
+// Write password to the #password input
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
 
-        types: function() {
-          alert("MUST contain at least one uppercase letter, MUST contain at least one lowercase letter, MUST contain at least one number!");
-        },
+  passwordText.value = password;
+}
 
-        characters: function() {
-          alert("Must contain at least 8 characters and no more than 128 characters!");
+// Functions for getting the inputs from the user
+function askForPasswordLength() {
+  var passwordLength = 0;
+  while (passwordLength < 8 || passwordLength > 128) {
+    passwordLength = parseInt(prompt("How long should your password be?"));
+    if (passwordLength < 8 || passwordLength > 128) {
+      alert("Your password has to be between 8 and 128 characters.");
+    }
+  }
+  return passwordLength;
+}
+
+function askForLowercase() {
+  var useLowercase = confirm("Do you want to include lowercase characters?");
+  return useLowercase;
+}
+
+function askForUppercase() {
+  var useUppercase = confirm("Do you want to include uppercase characters?");
+  return useUppercase;
+}
+
+function askForNumeric() {
+  var useNumeric = confirm("Do you want to include numbers?");
+  return useNumeric;
+}
+
+function askForSpecial() {
+  var useSpecialCharacters = confirm(
+    "Do you want to include special characters?"
+  );
+  return useSpecialCharacters;
+}
+
+function generatePassword() {
+  var passwordLength = askForPasswordLength();
+  var useLowercase = askForLowercase();
+  var useUppercase = askForUppercase();
+  var useNumeric = askForNumeric();
+  var useSpecialCharacters = askForSpecial();
+
+  // If none of the cases is selected, the user is warned he has to do a selection
+  // and he's asked again the same set of questions
+  if (!useLowercase && !useUppercase && !useNumeric && !useSpecialCharacters) {
+    alert("Please select at least one criteria for the password!");
+    generatePassword();
+  } else {
+    var password = createPassword(
+      passwordLength,
+      useLowercase,
+      useUppercase,
+      useNumeric,
+      useSpecialCharacters
+    );
+
+    return password;
+  }
+}
+
+function createPassword(
+  length,
+  useLowercase,
+  useUppercase,
+  useNumeric,
+  useSpecialCharacters
+) {
+  var alpha = "abcdefghijklmnopqrstuvwxyz";
+  var caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var numeric = "0123456789";
+  var special = "!$^&*-=+_?";
+
+  var options = [];
+
+  if (useLowercase) {
+    options.push(alpha);
+  }
+
+  if (useUppercase) {
+    options.push(caps);
+  }
+
+  if (useNumeric) {
+    options.push(numeric);
+  }
+
+  if (useSpecialCharacters) {
+    options.push(special);
+
+  }
+
+  var password = "";
+  var passwordArray = Array(length);
+
+  for (i = 0; i < length; i++) {
+    var currentOption = options[Math.floor(Math.random() * options.length)];
+    var randomChar = currentOption.charAt(
+      Math.floor(Math.random() * currentOption.length)
+    );
+    password += randomChar;
+    passwordArray.push(randomChar);
+  }
+
+  checkPassword();
+
+  function checkPassword() {
+    var missingValueArray = [];
+    var containsAll = true;
+
+    options.forEach(function (e, i, a) {
+      var hasValue = false;
+      passwordArray.forEach(function (e1, i1, a1) {
+        if (e.indexOf(e1) > -1) {
+          hasValue = true;
         }
-      };
+      });
 
-      // FUNCTIONS
-      // ==============================================================================
-
-      // Logs all of our password's current stats to the console.
-      function reWriteStats() {
-        console.log("Length: " + password.length);
-        console.log("Uppercase: " + password.uppercase);
-        console.log("Lowercase:" + password.uppercase);
-        console.log("Number: " + password.number);
-        console.log("------------------------------");
+      if (!hasValue) {
+        missingValueArray = a;
+        containsAll = false;
       }
+    });
 
-      // MAIN PROCESS
-      // ==============================================================================
+    if (!containsAll) {
+      passwordArray[
+        Math.floor(Math.random() * passwordArray.length)
+      ] = missingValueArray.charAt(
+        Math.floor(Math.random() * missingValueArray.length)
+      );
+      password = "";
+      passwordArray.forEach(function (e, i, a) {
+        password += e;
+      });
+      checkPassword();
+    }
+  }
 
-      while (letter !== null) {
-        // Prompt user to input a letter
-        letter = prompt("Type 'c' to see how many characters the password should have, 't' to see which character types the password should have.");
-
-        // If the letter is c, run the following functions/methods.
-        if (letter === "c") {
-          password.characters();
-          reWriteStats();
-        }
-        // If the letter is t, run the following functions/methods.
-        else if (letter === "t") {
-          password.types();
-          reWriteStats();
-        }
-
-      }
-
-var myInput = document.getElementById("psw");
-var letter = document.getElementById("letter");
-var capital = document.getElementById("capital");
-var number = document.getElementById("number");
-var length = document.getElementById("length");
-var myForm = document.getElementById("psw-form");
-
-// When the user submits his password, the alert pops out that shows his password
-myForm.onsubmit = function (event) {  
-  event.preventDefault();
-  alert("Your password is: " + myInput.value);
-};
-
-// When the user clicks on the password field, show the message box
-myInput.onfocus = function() {
-  document.getElementById("message").style.display = "block";
+  return password;
 }
-
-// When the user clicks outside of the password field, hide the message box
-myInput.onblur = function() {
-  document.getElementById("message").style.display = "none";
-}
-
-// When the user starts to type something inside the password field
-myInput.onkeyup = function() {
-  // Validate lowercase letters
-  var lowerCaseLetters = /[a-z]/g;
-  if(myInput.value.match(lowerCaseLetters)) {  
-    letter.classList.remove("invalid");
-    letter.classList.add("valid");
-  } else {
-    letter.classList.remove("valid");
-    letter.classList.add("invalid");
-  }
-  
-  // Validate capital letters
-  var upperCaseLetters = /[A-Z]/g;
-  if(myInput.value.match(upperCaseLetters)) {  
-    capital.classList.remove("invalid");
-    capital.classList.add("valid");
-  } else {
-    capital.classList.remove("valid");
-    capital.classList.add("invalid");
-  }
-
-  // Validate numbers
-  var numbers = /[0-9]/g;
-  if(myInput.value.match(numbers)) {  
-    number.classList.remove("invalid");
-    number.classList.add("valid");
-  } else {
-    number.classList.remove("valid");
-    number.classList.add("invalid");
-  }
-  
-  // Validate length
-  if(myInput.value.length >= 8) {
-    length.classList.remove("invalid");
-    length.classList.add("valid");
-  } else {
-    length.classList.remove("valid");
-    length.classList.add("invalid");
-  }
-}
+// Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
